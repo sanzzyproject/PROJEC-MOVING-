@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ---- NAVIGASI BAWAH ----
+    // ---- NAVIGASI BAWAH NATIVE FEEL ----
     const navItems = document.querySelectorAll('.nav-item');
     const views = document.querySelectorAll('.view-section');
 
@@ -12,19 +12,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetId = item.getAttribute('data-target');
             document.getElementById(targetId).classList.add('active');
             
-            // Auto focus pencarian jika masuk ke tab search
             if(targetId === 'search-view') {
                 document.getElementById('main-search').focus();
             }
         });
     });
 
-    // ---- FUNGSI RENDER KARTU FILM ----
+    // ---- FUNGSI RENDER KARTU PRESISI ----
     function createMovieCard(movie) {
         return `
-            <div class="movie-card" onclick="openDetail('${movie.url}', '${movie.title}', '${movie.image}')">
+            <div class="movie-card" onclick="openDetail('${movie.url}', '${movie.title.replace(/'/g, "\\'")}', '${movie.image}')">
                 <div class="quality-badge">${movie.quality || 'HD'}</div>
-                <img src="${movie.image}" alt="${movie.title}" loading="lazy">
+                <img src="${movie.image}" alt="Poster" loading="lazy">
                 <div class="movie-info">
                     <h3>${movie.title}</h3>
                     <p>${movie.year}</p>
@@ -33,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // ---- FETCH API KATEGORI HOME ----
+    // ---- FETCH API KATEGORI ----
     async function fetchCategory(query, containerId) {
         const container = document.getElementById(containerId);
         try {
@@ -54,85 +53,87 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchCategory('action', 'row-action');
     fetchCategory('romance', 'row-romance');
     fetchCategory('comedy', 'row-comedy');
-    fetchCategory('horror', 'row-horror');
-    fetchCategory('sci-fi', 'row-scifi');
     fetchCategory('anime', 'row-animation');
 
-    // ---- FITUR PENCARIAN CLEAN ----
+    // ---- PENCARIAN & CLEAR BUTTON ----
     const mainSearchInput = document.getElementById('main-search');
+    const clearBtn = document.getElementById('clear-search');
+    const searchContainer = document.getElementById('search-movies');
     let searchTimeout;
     
     mainSearchInput.addEventListener('input', (e) => {
-        clearTimeout(searchTimeout);
         const query = e.target.value.trim();
-        const container = document.getElementById('search-movies');
+        clearBtn.style.display = query.length > 0 ? 'block' : 'none';
         
+        clearTimeout(searchTimeout);
         if (query.length === 0) {
-            container.innerHTML = '<div class="loader">Ketik judul untuk memulai pencarian...</div>';
+            searchContainer.innerHTML = '<div class="empty-state">Mulai jelajahi pustaka kami.</div>';
             return;
         }
 
-        container.innerHTML = '<div class="loader">Mencari...</div>';
+        searchContainer.innerHTML = '<div class="loader">Mencari...</div>';
         searchTimeout = setTimeout(async () => {
             try {
                 const res = await fetch(`/api/search?q=${query}`);
                 const json = await res.json();
                 if(json.success && json.data.length > 0) {
-                    container.innerHTML = json.data.map(movie => createMovieCard(movie)).join('');
+                    searchContainer.innerHTML = json.data.map(movie => createMovieCard(movie)).join('');
                 } else {
-                    container.innerHTML = '<div class="loader">Data tidak ditemukan.</div>';
+                    searchContainer.innerHTML = '<div class="empty-state">Data tidak ditemukan.</div>';
                 }
             } catch (err) {
-                container.innerHTML = '<div class="loader">Terjadi kesalahan koneksi.</div>';
+                searchContainer.innerHTML = '<div class="loader">Terjadi kesalahan koneksi.</div>';
             }
         }, 800);
     });
 
-    // ---- LOGIKA MODAL DETAIL & FIX GAMBAR BLUR ----
+    clearBtn.addEventListener('click', () => {
+        mainSearchInput.value = '';
+        clearBtn.style.display = 'none';
+        searchContainer.innerHTML = '<div class="empty-state">Mulai jelajahi pustaka kami.</div>';
+        mainSearchInput.focus();
+    });
+
+    // ---- LOGIKA MODAL DETAIL (FIX BLUR IMAGE TETAP ADA) ----
     window.openDetail = async function(url, title, image) {
         const modal = document.getElementById('detail-modal');
         
-        // TRIK MEMPERBAIKI GAMBAR BLUR:
-        // Menghapus ukuran resolusi thumbnail dari URL WordPress (misal: -225x300.jpg jadi .jpg)
+        // Fix Resolusi Gambar
         let highResImage = image;
         if(image.includes('-')) {
             highResImage = image.replace(/-\d+x\d+(?=\.(jpg|jpeg|png|webp))/i, '');
         }
 
-        // Reset Modal State
         document.getElementById('detail-title').textContent = title;
-        document.getElementById('detail-img').src = highResImage; // Menggunakan gambar aslinya (High-Res)
+        document.getElementById('detail-img').src = highResImage;
         document.getElementById('detail-synopsis').innerHTML = 'Memuat informasi...';
         document.getElementById('detail-badges').innerHTML = '';
         document.getElementById('detail-downloads').innerHTML = '';
         modal.style.display = 'block';
 
-        // Fetch Detail dari Backend Node.js
         try {
             const res = await fetch(`/api/detail?url=${encodeURIComponent(url)}`);
             const json = await res.json();
             if(json.success) {
                 const data = json.data;
-                document.getElementById('detail-synopsis').textContent = data.synopsis || 'Sinopsis tidak tersedia untuk judul ini.';
+                document.getElementById('detail-synopsis').textContent = data.synopsis || '-';
                 
-                // Badges Info
                 let badgesHtml = '';
                 if(data.release) badgesHtml += `<span>${data.release}</span>`;
                 if(data.duration) badgesHtml += `<span>${data.duration}</span>`;
                 if(data.rating) badgesHtml += `<span>★ ${data.rating}</span>`;
                 document.getElementById('detail-badges').innerHTML = badgesHtml;
 
-                // Download UI Moderen & Minimalis
+                // UI Download Grid yang Rapi
                 const dls = data.downloads.map(dl => `
-                    <div class="dl-group">
-                        <div class="dl-header">
-                            <i class="fas fa-video"></i>
-                            <h4>${dl.quality}</h4>
+                    <div class="dl-card">
+                        <div class="dl-top">
+                            <i class="fas fa-video"></i> ${dl.quality}
                         </div>
-                        <div class="dl-links">
+                        <div class="dl-bottom">
                             ${dl.links.map(link => `
-                                <a href="${link.url}" target="_blank" class="btn-download">
-                                    <i class="fas fa-download"></i> ${link.provider}
+                                <a href="${link.url}" target="_blank" class="dl-btn">
+                                    <i class="fas fa-arrow-down"></i> ${link.provider}
                                 </a>
                             `).join('')}
                         </div>
@@ -145,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Close Modal
     document.getElementById('close-modal').addEventListener('click', () => {
         document.getElementById('detail-modal').style.display = 'none';
     });
