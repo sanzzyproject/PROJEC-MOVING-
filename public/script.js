@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // ---- FETCH API UNTUK KATEGORI NETFLIX-STYLE ----
+    // ---- FETCH API KATEGORI HOME ----
     async function fetchCategory(query, containerId) {
         const container = document.getElementById(containerId);
         try {
@@ -42,23 +42,23 @@ document.addEventListener('DOMContentLoaded', () => {
             if(json.success && json.data.length > 0) {
                 container.innerHTML = json.data.map(movie => createMovieCard(movie)).join('');
             } else {
-                container.innerHTML = '<p class="loader">Gagal memuat.</p>';
+                container.innerHTML = '<p class="loader">Tidak ada data.</p>';
             }
         } catch (err) {
             container.innerHTML = '<p class="loader">Koneksi Error.</p>';
         }
     }
 
-    // Load Data Home Super Lengkap
+    // Load Data Home
     fetchCategory('terbaru', 'row-popular');
     fetchCategory('action', 'row-action');
     fetchCategory('romance', 'row-romance');
     fetchCategory('comedy', 'row-comedy');
     fetchCategory('horror', 'row-horror');
     fetchCategory('sci-fi', 'row-scifi');
-    fetchCategory('anime', 'row-animation'); // Menggunakan keyword anime agar relevan
+    fetchCategory('anime', 'row-animation');
 
-    // ---- FITUR PENCARIAN ----
+    // ---- FITUR PENCARIAN CLEAN ----
     const mainSearchInput = document.getElementById('main-search');
     let searchTimeout;
     
@@ -68,11 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = document.getElementById('search-movies');
         
         if (query.length === 0) {
-            container.innerHTML = '<div class="loader">Ketik judul film di atas...</div>';
+            container.innerHTML = '<div class="loader">Ketik judul untuk memulai pencarian...</div>';
             return;
         }
 
-        container.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> Mencari film...</div>';
+        container.innerHTML = '<div class="loader">Mencari...</div>';
         searchTimeout = setTimeout(async () => {
             try {
                 const res = await fetch(`/api/search?q=${query}`);
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(json.success && json.data.length > 0) {
                     container.innerHTML = json.data.map(movie => createMovieCard(movie)).join('');
                 } else {
-                    container.innerHTML = '<div class="loader">Film tidak ditemukan.</div>';
+                    container.innerHTML = '<div class="loader">Data tidak ditemukan.</div>';
                 }
             } catch (err) {
                 container.innerHTML = '<div class="loader">Terjadi kesalahan koneksi.</div>';
@@ -88,14 +88,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 800);
     });
 
-    // ---- LOGIKA MODAL DETAIL (DOWNLOAD & SINOPSIS) ----
+    // ---- LOGIKA MODAL DETAIL & FIX GAMBAR BLUR ----
     window.openDetail = async function(url, title, image) {
         const modal = document.getElementById('detail-modal');
         
+        // TRIK MEMPERBAIKI GAMBAR BLUR:
+        // Menghapus ukuran resolusi thumbnail dari URL WordPress (misal: -225x300.jpg jadi .jpg)
+        let highResImage = image;
+        if(image.includes('-')) {
+            highResImage = image.replace(/-\d+x\d+(?=\.(jpg|jpeg|png|webp))/i, '');
+        }
+
         // Reset Modal State
         document.getElementById('detail-title').textContent = title;
-        document.getElementById('detail-img').src = image;
-        document.getElementById('detail-synopsis').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengambil data...';
+        document.getElementById('detail-img').src = highResImage; // Menggunakan gambar aslinya (High-Res)
+        document.getElementById('detail-synopsis').innerHTML = 'Memuat informasi...';
         document.getElementById('detail-badges').innerHTML = '';
         document.getElementById('detail-downloads').innerHTML = '';
         modal.style.display = 'block';
@@ -106,28 +113,35 @@ document.addEventListener('DOMContentLoaded', () => {
             const json = await res.json();
             if(json.success) {
                 const data = json.data;
-                document.getElementById('detail-synopsis').textContent = data.synopsis || 'Sinopsis tidak tersedia untuk film ini.';
+                document.getElementById('detail-synopsis').textContent = data.synopsis || 'Sinopsis tidak tersedia untuk judul ini.';
                 
                 // Badges Info
                 let badgesHtml = '';
                 if(data.release) badgesHtml += `<span>${data.release}</span>`;
-                if(data.duration) badgesHtml += `<span><i class="fas fa-clock"></i> ${data.duration}</span>`;
-                if(data.rating) badgesHtml += `<span><i class="fas fa-star"></i> ${data.rating}</span>`;
+                if(data.duration) badgesHtml += `<span>${data.duration}</span>`;
+                if(data.rating) badgesHtml += `<span>★ ${data.rating}</span>`;
                 document.getElementById('detail-badges').innerHTML = badgesHtml;
 
-                // Download Links
+                // Download UI Moderen & Minimalis
                 const dls = data.downloads.map(dl => `
-                    <div class="dl-quality">
-                        <h4><i class="fas fa-download"></i> ${dl.quality}</h4>
+                    <div class="dl-group">
+                        <div class="dl-header">
+                            <i class="fas fa-video"></i>
+                            <h4>${dl.quality}</h4>
+                        </div>
                         <div class="dl-links">
-                            ${dl.links.map(link => `<a href="${link.url}" target="_blank">${link.provider}</a>`).join('')}
+                            ${dl.links.map(link => `
+                                <a href="${link.url}" target="_blank" class="btn-download">
+                                    <i class="fas fa-download"></i> ${link.provider}
+                                </a>
+                            `).join('')}
                         </div>
                     </div>
                 `).join('');
-                document.getElementById('detail-downloads').innerHTML = dls || '<p class="loader">Link download belum tersedia.</p>';
+                document.getElementById('detail-downloads').innerHTML = dls || '<p class="loader">Tautan belum tersedia.</p>';
             }
         } catch(e) {
-            document.getElementById('detail-synopsis').textContent = 'Gagal memuat detail film.';
+            document.getElementById('detail-synopsis').textContent = 'Gagal memuat detail data.';
         }
     };
 
