@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://picsum.photos/192">
+    
     <title>SANN404 Movies</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,26 +17,25 @@
     <div class="app-container">
         
         <header class="app-header glass-header">
-            <h1 class="web-title">SANN404<span class="highlight">MOV</span></h1>
+            <h1 class="web-title">SANN404<span class="dot">.</span></h1>
             <div class="profile-pic" style="background-image: url('https://picsum.photos/100');"></div>
         </header>
 
         <main class="app-content">
             
             <section id="home-view" class="view-section active">
-                
                 <div class="category-section" style="margin-top: 0;">
                     <div class="category-header">
-                        <h2>Sedang Populer</h2>
-                        <span>Lihat Semua</span>
+                        <h2>Sedang Tren</h2>
+                        <i class="fas fa-chevron-right"></i>
                     </div>
                     <div class="movie-row" id="row-popular">
-                        <div class="loader">Memuat Film...</div>
+                        <div class="loader">Memuat data...</div>
                     </div>
                 </div>
 
                 <div class="category-section">
-                    <div class="category-header"><h2>Action Pilihan</h2></div>
+                    <div class="category-header"><h2>Action & Adrenalin</h2></div>
                     <div class="movie-row" id="row-action"></div>
                 </div>
 
@@ -40,22 +45,12 @@
                 </div>
 
                 <div class="category-section">
-                    <div class="category-header"><h2>Comedy Seru</h2></div>
+                    <div class="category-header"><h2>Comedy & Hiburan</h2></div>
                     <div class="movie-row" id="row-comedy"></div>
                 </div>
 
                 <div class="category-section">
-                    <div class="category-header"><h2>Horror Mencekam</h2></div>
-                    <div class="movie-row" id="row-horror"></div>
-                </div>
-
-                <div class="category-section">
-                    <div class="category-header"><h2>Sci-Fi & Fantasi</h2></div>
-                    <div class="movie-row" id="row-scifi"></div>
-                </div>
-
-                <div class="category-section">
-                    <div class="category-header"><h2>Animasi & Anime</h2></div>
+                    <div class="category-header"><h2>Anime Masterpiece</h2></div>
                     <div class="movie-row" id="row-animation"></div>
                 </div>
 
@@ -65,47 +60,38 @@
             <section id="search-view" class="view-section">
                 <div class="search-wrapper">
                     <i class="fas fa-search search-icon"></i>
-                    <input type="text" id="main-search" placeholder="Cari film, series, atau anime...">
-                </div>
-                <div class="search-results-header">
-                    <h2>Hasil Pencarian</h2>
+                    <input type="text" id="main-search" placeholder="Temukan film atau anime...">
+                    <button id="clear-search" style="display:none;"><i class="fas fa-times"></i></button>
                 </div>
                 <div class="movie-grid" id="search-movies">
-                    <div class="loader">Ketik judul untuk memulai...</div>
+                    <div class="empty-state">Mulai jelajahi pustaka kami.</div>
                 </div>
             </section>
 
             <section id="docs-view" class="view-section">
                 <div class="docs-container">
+                    <h2 class="page-title">Informasi</h2>
                     
-                    <div class="docs-header">
-                        <h2>Dokumentasi</h2>
-                        <p>Panduan penggunaan & info teknis</p>
-                    </div>
-                    
-                    <div class="docs-block">
-                        <h3><i class="fas fa-info-circle"></i> Tentang Web</h3>
-                        <p>SANN404 Movies adalah platform berdesain minimalis untuk mencari, membaca sinopsis, dan mengunduh film atau anime. Menggunakan sistem ekstraksi data real-time untuk memastikan tautan selalu terbarui.</p>
+                    <div class="info-card">
+                        <h3>Tentang Sistem</h3>
+                        <p>SANN404 Movies adalah antarmuka web progresif (PWA) berkecepatan tinggi yang mengekstraksi data film dan anime secara real-time. Dibangun dengan fokus pada tipografi minimalis dan efisiensi memori untuk perangkat mobile.</p>
                     </div>
 
-                    <div class="docs-block">
-                        <h3><i class="fas fa-terminal"></i> Petunjuk Penggunaan</h3>
-                        <ul class="clean-list">
-                            <li><span>01</span> Eksplorasi film melalui tab Beranda.</li>
-                            <li><span>02</span> Gunakan fitur Pencarian untuk judul spesifik.</li>
-                            <li><span>03</span> Klik poster untuk membaca sinopsis & mendapat tautan unduhan.</li>
+                    <div class="info-card">
+                        <h3>Cara Pakai</h3>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Jelajahi kurasi genre di Beranda.</li>
+                            <li><i class="fas fa-check"></i> Gunakan Pencarian cerdas untuk akurasi.</li>
+                            <li><i class="fas fa-check"></i> Klik poster untuk akses kualitas HD & tautan.</li>
                         </ul>
                     </div>
 
-                    <div class="docs-developer-card">
-                        <div class="dev-info">
-                            <p class="dev-label">DEVELOPER</p>
-                            <h2>SANN404 FORUM</h2>
-                            <p class="dev-desc">Dapatkan pembaruan sistem dan proyek web modern lainnya secara langsung.</p>
-                        </div>
-                        <a href="#" class="btn-join"><i class="fab fa-telegram-plane"></i> Gabung Saluran Admin</a>
+                    <div class="developer-box">
+                        <p class="dev-tag">ENGINEERED BY</p>
+                        <h2>SANN404 FORUM</h2>
+                        <p class="dev-desc">Dukung pengembangan dan dapatkan pembaruan eksklusif.</p>
+                        <a href="#" class="btn-primary"><i class="fab fa-telegram-plane"></i> Join Saluran Admin</a>
                     </div>
-
                 </div>
             </section>
 
@@ -113,49 +99,59 @@
 
         <div id="detail-modal" class="modal">
             <div class="modal-content">
-                <div class="modal-nav glass-header">
-                    <button id="close-modal" class="icon-btn"><i class="fas fa-arrow-left"></i></button>
-                    <span>Detail Informasi</span>
-                    <button class="icon-btn"><i class="far fa-bookmark"></i></button>
+                <div class="modal-nav">
+                    <button id="close-modal" class="circle-btn"><i class="fas fa-arrow-left"></i></button>
                 </div>
 
                 <div class="detail-hero">
                     <img id="detail-img" src="" alt="Poster">
-                    <div class="hero-gradient"></div>
+                    <div class="hero-fade"></div>
                 </div>
 
                 <div class="detail-body">
-                    <h1 id="detail-title">Judul</h1>
-                    <div class="badges" id="detail-badges"></div>
+                    <div class="title-area">
+                        <h1 id="detail-title">Memuat...</h1>
+                        <div class="meta-tags" id="detail-badges"></div>
+                    </div>
                     
-                    <div class="content-block">
-                        <h3 class="block-title">Sinopsis</h3>
-                        <p id="detail-synopsis" class="synopsis-text"></p>
+                    <div class="content-section">
+                        <h3 class="section-heading">SINOPSIS</h3>
+                        <p id="detail-synopsis" class="text-body"></p>
                     </div>
 
-                    <div class="content-block">
-                        <h3 class="block-title">Tautan Unduhan</h3>
-                        <div id="detail-downloads" class="download-list"></div>
+                    <div class="content-section">
+                        <h3 class="section-heading">UNDUHAN TERSEDIA</h3>
+                        <div id="detail-downloads" class="download-grid"></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <nav class="bottom-nav">
+        <nav class="bottom-nav glass-nav">
             <div class="nav-item active" data-target="home-view">
-                <i class="fas fa-home"></i>
-                <span>Beranda</span>
+                <i class="fas fa-house"></i>
+                <span class="nav-indicator"></span>
             </div>
             <div class="nav-item" data-target="search-view">
                 <i class="fas fa-search"></i>
-                <span>Pencarian</span>
+                <span class="nav-indicator"></span>
             </div>
             <div class="nav-item" data-target="docs-view">
                 <i class="fas fa-layer-group"></i>
-                <span>Info</span>
+                <span class="nav-indicator"></span>
             </div>
         </nav>
     </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('PWA tersambung!'))
+                .catch(err => console.log('PWA gagal:', err));
+            });
+        }
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
