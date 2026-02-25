@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#0b0f19">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="https://picsum.photos/192">
@@ -17,17 +17,17 @@
     <div class="app-container">
         
         <header class="app-header glass-header">
-            <h1 class="web-title">SANN404<span class="dot">.</span></h1>
+            <h1 class="web-title">SANN404<span class="highlight">Movies</span></h1>
             <div class="profile-pic" style="background-image: url('https://picsum.photos/100');"></div>
         </header>
 
         <main class="app-content">
             
             <section id="home-view" class="view-section active">
-                <div class="category-section" style="margin-top: 0;">
+                
+                <div class="category-section" style="margin-top: 5px;">
                     <div class="category-header">
-                        <h2>Sedang Tren</h2>
-                        <i class="fas fa-chevron-right"></i>
+                        <h2><i class="fas fa-fire" style="color: #ff4757;"></i> Rekomendasi Populer</h2>
                     </div>
                     <div class="movie-row" id="row-popular">
                         <div class="loader">Memuat data...</div>
@@ -35,22 +35,44 @@
                 </div>
 
                 <div class="category-section">
-                    <div class="category-header"><h2>Action & Adrenalin</h2></div>
+                    <div class="category-header">
+                        <h2><i class="fas fa-bomb" style="color: #ffa502;"></i> Action Pilihan</h2>
+                    </div>
                     <div class="movie-row" id="row-action"></div>
                 </div>
 
                 <div class="category-section">
-                    <div class="category-header"><h2>Romance & Drama</h2></div>
+                    <div class="category-header">
+                        <h2><i class="fas fa-heart" style="color: #ff6b81;"></i> Romance & Drama</h2>
+                    </div>
                     <div class="movie-row" id="row-romance"></div>
                 </div>
 
                 <div class="category-section">
-                    <div class="category-header"><h2>Comedy & Hiburan</h2></div>
+                    <div class="category-header">
+                        <h2><i class="fas fa-laugh-squint" style="color: #1e90ff;"></i> Comedy Seru</h2>
+                    </div>
                     <div class="movie-row" id="row-comedy"></div>
                 </div>
 
                 <div class="category-section">
-                    <div class="category-header"><h2>Anime Masterpiece</h2></div>
+                    <div class="category-header">
+                        <h2><i class="fas fa-ghost" style="color: #7bed9f;"></i> Horror Mencekam</h2>
+                    </div>
+                    <div class="movie-row" id="row-horror"></div>
+                </div>
+
+                <div class="category-section">
+                    <div class="category-header">
+                        <h2><i class="fas fa-rocket" style="color: #70a1ff;"></i> Sci-Fi & Fantasi</h2>
+                    </div>
+                    <div class="movie-row" id="row-scifi"></div>
+                </div>
+
+                <div class="category-section">
+                    <div class="category-header">
+                        <h2><i class="fas fa-mask" style="color: #ff7f50;"></i> Animasi & Anime</h2>
+                    </div>
                     <div class="movie-row" id="row-animation"></div>
                 </div>
 
@@ -60,36 +82,50 @@
             <section id="search-view" class="view-section">
                 <div class="search-wrapper">
                     <i class="fas fa-search search-icon"></i>
-                    <input type="text" id="main-search" placeholder="Temukan film atau anime...">
-                    <button id="clear-search" style="display:none;"><i class="fas fa-times"></i></button>
+                    <input type="text" id="main-search" placeholder="Cari judul film atau anime...">
+                    <button id="clear-search" style="display:none;"><i class="fas fa-times-circle"></i></button>
                 </div>
-                <div class="movie-grid" id="search-movies">
-                    <div class="empty-state">Mulai jelajahi pustaka kami.</div>
+                
+                <div id="search-movies">
+                    <div class="empty-state">
+                        <div class="empty-icon"><i class="fas fa-film"></i></div>
+                        <h3>Pencarian Kosong</h3>
+                        <p>Ketik judul film, series, atau anime yang ingin kamu tonton hari ini.</p>
+                    </div>
                 </div>
             </section>
 
             <section id="docs-view" class="view-section">
                 <div class="docs-container">
-                    <h2 class="page-title">Informasi</h2>
                     
-                    <div class="info-card">
-                        <h3>Tentang Sistem</h3>
-                        <p>SANN404 Movies adalah antarmuka web progresif (PWA) berkecepatan tinggi yang mengekstraksi data film dan anime secara real-time. Dibangun dengan fokus pada tipografi minimalis dan efisiensi memori untuk perangkat mobile.</p>
+                    <div class="install-card">
+                        <div class="install-text">
+                            <h3>Aplikasi SANN404</h3>
+                            <p>Pasang aplikasi di HP agar lebih cepat dan hemat kuota.</p>
+                        </div>
+                        <button id="install-pwa-btn" class="btn-install">
+                            <i class="fas fa-download"></i> Install APK
+                        </button>
                     </div>
 
                     <div class="info-card">
-                        <h3>Cara Pakai</h3>
+                        <h3><i class="fas fa-info-circle icon-accent"></i> Tentang Web</h3>
+                        <p>SANN404 Movies adalah platform untuk mencari, membaca sinopsis lengkap, dan mendapatkan tautan unduhan film serta anime terbaru dengan kualitas HD secara gratis.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-list-ul icon-accent"></i> Cara Penggunaan</h3>
                         <ul class="feature-list">
-                            <li><i class="fas fa-check"></i> Jelajahi kurasi genre di Beranda.</li>
-                            <li><i class="fas fa-check"></i> Gunakan Pencarian cerdas untuk akurasi.</li>
-                            <li><i class="fas fa-check"></i> Klik poster untuk akses kualitas HD & tautan.</li>
+                            <li>Jelajahi berbagai genre film melalui tab <b>Beranda</b>.</li>
+                            <li>Gunakan <b>Pencarian</b> untuk menemukan judul spesifik.</li>
+                            <li>Klik poster film untuk melihat detail durasi, rating, dan sinopsis.</li>
+                            <li>Tautan unduhan tersedia di bagian paling bawah pada menu detail.</li>
                         </ul>
                     </div>
 
                     <div class="developer-box">
-                        <p class="dev-tag">ENGINEERED BY</p>
+                        <p class="dev-tag">DEVELOPER</p>
                         <h2>SANN404 FORUM</h2>
-                        <p class="dev-desc">Dukung pengembangan dan dapatkan pembaruan eksklusif.</p>
                         <a href="#" class="btn-primary"><i class="fab fa-telegram-plane"></i> Join Saluran Admin</a>
                     </div>
                 </div>
@@ -120,7 +156,7 @@
                     </div>
 
                     <div class="content-section">
-                        <h3 class="section-heading">UNDUHAN TERSEDIA</h3>
+                        <h3 class="section-heading">TAUTAN UNDUHAN</h3>
                         <div id="detail-downloads" class="download-grid"></div>
                     </div>
                 </div>
@@ -129,16 +165,16 @@
 
         <nav class="bottom-nav glass-nav">
             <div class="nav-item active" data-target="home-view">
-                <i class="fas fa-house"></i>
-                <span class="nav-indicator"></span>
+                <i class="fas fa-home"></i>
+                <span>Beranda</span>
             </div>
             <div class="nav-item" data-target="search-view">
-                <i class="fas fa-search"></i>
-                <span class="nav-indicator"></span>
+                <i class="fas fa-compass"></i>
+                <span>Cari</span>
             </div>
             <div class="nav-item" data-target="docs-view">
-                <i class="fas fa-layer-group"></i>
-                <span class="nav-indicator"></span>
+                <i class="fas fa-folder-open"></i>
+                <span>Docs</span>
             </div>
         </nav>
     </div>
@@ -146,9 +182,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('PWA tersambung!'))
-                .catch(err => console.log('PWA gagal:', err));
+                navigator.serviceWorker.register('/sw.js');
             });
         }
     </script>
