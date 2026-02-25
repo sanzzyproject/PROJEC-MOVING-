@@ -9,54 +9,154 @@
 </head>
 <body>
     <div class="app-container">
-        <header class="app-header">
-            <h1 id="header-title">Rekomendasi</h1>
-            <div class="profile-pic"></div>
+        
+        <header class="app-header glass-header">
+            <h1 class="web-title">SANN404<span class="highlight">MOV</span></h1>
+            <div class="profile-pic" style="background-image: url('https://picsum.photos/100');"></div>
         </header>
 
         <main class="app-content">
             
             <section id="home-view" class="view-section active">
-                <div class="movie-grid" id="home-movies">
-                    <div class="loader">Loading...</div>
+                
+                <div class="category-section" style="margin-top: 0;">
+                    <div class="category-header">
+                        <h2>🔥 Sedang Populer</h2>
+                        <span>Lihat Semua</span>
+                    </div>
+                    <div class="movie-row" id="row-popular">
+                        <div class="loader">Memuat Film...</div>
+                    </div>
                 </div>
+
+                <div class="category-section">
+                    <div class="category-header">
+                        <h2>💥 Action Pilihan</h2>
+                    </div>
+                    <div class="movie-row" id="row-action"></div>
+                </div>
+
+                <div class="category-section">
+                    <div class="category-header">
+                        <h2>❤️ Romance & Drama</h2>
+                    </div>
+                    <div class="movie-row" id="row-romance"></div>
+                </div>
+
+                <div class="category-section">
+                    <div class="category-header">
+                        <h2>😂 Comedy Seru</h2>
+                    </div>
+                    <div class="movie-row" id="row-comedy"></div>
+                </div>
+
+                <div class="category-section">
+                    <div class="category-header">
+                        <h2>👻 Horror Mencekam</h2>
+                    </div>
+                    <div class="movie-row" id="row-horror"></div>
+                </div>
+
+                <div class="category-section">
+                    <div class="category-header">
+                        <h2>🚀 Sci-Fi & Fantasi</h2>
+                    </div>
+                    <div class="movie-row" id="row-scifi"></div>
+                </div>
+
+                <div class="category-section">
+                    <div class="category-header">
+                        <h2>🎌 Animasi & Anime</h2>
+                    </div>
+                    <div class="movie-row" id="row-animation"></div>
+                </div>
+
                 <div class="credit">Developed by SANN404 FORUM</div>
             </section>
 
             <section id="search-view" class="view-section">
                 <div class="search-bar-container">
-                    <input type="text" id="search-input" placeholder="Cari film favoritmu...">
-                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="main-search" placeholder="Cari film, series, atau anime...">
+                </div>
+                <div class="category-header" style="margin-top: 20px;">
+                    <h2>Hasil Pencarian</h2>
                 </div>
                 <div class="movie-grid" id="search-movies">
-                    </div>
+                    <div class="loader">Ketik judul film di atas...</div>
+                </div>
             </section>
+
+            <section id="docs-view" class="view-section">
+                <div class="docs-container">
+                    <div class="docs-header">
+                        <i class="fas fa-file-code docs-icon"></i>
+                        <h2>Info & Dokumentasi</h2>
+                    </div>
+                    
+                    <div class="docs-card">
+                        <h3>Tentang Web Ini</h3>
+                        <p>SANN404 Movies adalah web responsif modern yang dirancang khusus untuk mencari, melihat detail, dan mendapatkan tautan unduhan film-film terbaru dengan kualitas terbaik. Web ini beroperasi menggunakan sistem *scraping* *real-time* untuk menyajikan data terakurat langsung ke perangkat genggam Anda.</p>
+                    </div>
+
+                    <div class="docs-card">
+                        <h3>Cara Penggunaan</h3>
+                        <ul class="docs-list">
+                            <li><i class="fas fa-check-circle"></i> Gunakan tab <b>Beranda</b> untuk melihat rekomendasi berdasarkan genre.</li>
+                            <li><i class="fas fa-check-circle"></i> Gunakan tab <b>Pencarian</b> untuk mencari judul spesifik.</li>
+                            <li><i class="fas fa-check-circle"></i> Klik poster film untuk melihat sinopsis dan tautan unduhan (G-Drive, Mega, dll).</li>
+                        </ul>
+                    </div>
+
+                    <div class="docs-card dev-card">
+                        <h3>Developer</h3>
+                        <h2 class="dev-name">SANN404 FORUM</h2>
+                        <p class="dev-desc">Terus pantau pembaruan dan proyek menarik lainnya dengan bergabung ke saluran resmi kami.</p>
+                        <a href="#" class="join-btn"><i class="fab fa-telegram-plane"></i> Join Saluran Admin</a>
+                    </div>
+                </div>
+            </section>
+
         </main>
 
         <div id="detail-modal" class="modal">
             <div class="modal-content">
-                <button id="close-modal" class="close-btn"><i class="fas fa-arrow-left"></i></button>
-                <img id="detail-img" src="" alt="Poster">
+                <div class="modal-nav glass-header">
+                    <button id="close-modal" class="icon-btn"><i class="fas fa-arrow-left"></i></button>
+                    <span>Detail Film</span>
+                    <button class="icon-btn"><i class="fas fa-heart"></i></button>
+                </div>
+
+                <div class="detail-hero">
+                    <img id="detail-img" src="" alt="Poster">
+                    <div class="hero-overlay"></div>
+                </div>
+
                 <div class="detail-body">
-                    <h2 id="detail-title">Judul</h2>
+                    <h2 id="detail-title">Judul Film</h2>
                     <div class="badges" id="detail-badges"></div>
+                    
+                    <div class="section-title">Sinopsis</div>
                     <p id="detail-synopsis" class="synopsis"></p>
-                    <div class="downloads-section">
-                        <h3>Link Download</h3>
-                        <div id="detail-downloads"></div>
-                    </div>
+
+                    <div class="section-title" style="margin-top: 25px;">Tautan Unduhan</div>
+                    <div class="downloads-section" id="detail-downloads"></div>
                 </div>
             </div>
         </div>
 
         <nav class="bottom-nav">
-            <div class="nav-item active" data-target="home-view" data-title="Rekomendasi">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
+            <div class="nav-item active" data-target="home-view">
+                <i class="fas fa-house"></i>
+                <span>Beranda</span>
             </div>
-            <div class="nav-item" data-target="search-view" data-title="Pencarian">
+            <div class="nav-item" data-target="search-view">
                 <i class="fas fa-search"></i>
-                <span>Search</span>
+                <span>Cari</span>
+            </div>
+            <div class="nav-item" data-target="docs-view">
+                <i class="fas fa-book"></i>
+                <span>Docs</span>
             </div>
         </nav>
     </div>
